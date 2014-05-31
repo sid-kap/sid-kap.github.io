@@ -1,5 +1,7 @@
 h1 {
 	font-family: sans-serif;
+	font-family: "Open Sans";
+	text-align: center;
 }
 
 #periodic-table {
@@ -11,6 +13,7 @@ h1 {
 
 #periodic-table td {
 	border: 1px solid black;
+	height: 100px;
 }
 
 #periodic-table .padding {
@@ -19,16 +22,20 @@ h1 {
 
 .element-number {
 	font-size: 50%;
+	font-family: "Open Sans";
 }
 
 .element-name {
 	font-size: 150%;
+	font-family: "Raleway";
 }
 
 .full-name {
 	font-size: 50%;
+	font-family: "Open Sans";
 }
 
 .grade {
 	font-size: 75%;
+	font-family: "Open Sans";
 }
