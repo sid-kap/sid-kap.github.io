@@ -1,0 +1,50 @@
+body {
+  padding: 50px;
+  font: 14px "Open Sans", "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+a {
+  color: #00b7ff;
+}
+.oval {
+  background: repeating-linear-gradient(to bottom, transparent, transparent 2%, #606dbc 2%, #606dbc 4%);
+  border: 2px solid #606dbc;
+  width: 100px;
+  height: 250px;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 100px;
+  text-align: center;
+  color: #00f;
+}
+.card {
+  border: 2px solid #000;
+}
+table.game {
+  border-spacing: 20px;
+  float: left;
+}
+table.game td {
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 3px 2px #000;
+  width: 120px;
+  height: 200px;
+  text-align: center;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.selected {
+  border: none !important;
+  box-shadow: 0px 0px 5pt 4pt #008000 !important;
+}
+#log {
+  float: left;
+  height: 100%;
+  width: 50%;
+}
