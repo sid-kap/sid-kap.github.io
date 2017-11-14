@@ -1,0 +1,85 @@
+
+body
+{
+  background-color : #fbf7ea;
+  font-family      : "tex_gyre_pagella", serif;
+  color            : #444444;
+  counter-reset    : sidenote-counter;
+}
+
+body a.sidenote-number
+{
+  counter-increment : sidenote-counter;
+  vertical-align    : super;
+  font-size         : smaller;
+  text-decoration   : none;
+  color             : #ff541c;
+}
+
+body a.sidenote-number::before
+{
+  content : counter(sidenote-counter);
+}
+
+body span.sidenote::before
+{
+  content        : counter(sidenote-counter) " ";
+  vertical-align : super;
+  font-size      : smaller;
+  color          : #ff541c;
+}
+
+body span.sidenote
+{
+  float          : right;
+  clear          : right;
+  font-size      : 0.8em;
+  vertical-align : baseline;
+  width          : 50%;
+  margin-right   : -53%;
+  text-indent    : 0em;
+  line-height    : 1.1em;
+}
+
+body div#content
+{
+  text-rendering : optimizeLegibility;
+  margin-top     : 5em;
+  margin-bottom  : 5em;
+  font-size      : 1.19999em;
+  margin         : 1em auto auto auto;
+  line-height    : 1.39999em;
+}
+
+body div#content h1
+{
+  text-align  : center;
+  margin      : auto auto auto auto;
+  line-height : 1.1em;
+}
+
+body div#content div#textBody
+{
+  text-indent : 2em;
+  text-align  : justify;
+  max-width   : 35em;
+  margin      : 1em auto auto auto;
+}
+
+body div#content p#date
+{
+  text-align : center;
+}
+
+body div#content p#read-time
+{
+  text-align : center;
+}
+
+body div#content blockquote
+{
+  text-align : justify;
+}
+
+
+/* Generated with Clay, http://fvisser.nl/clay */

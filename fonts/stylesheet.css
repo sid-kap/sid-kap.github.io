@@ -1,0 +1,28 @@
+@font-face {
+    font-family: 'tex_gyre_pagella';
+    src: url('texgyrepagella-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'tex_gyre_pagella';
+    src: url('texgyrepagella-italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'tex_gyre_pagella';
+    src: url('texgyrepagella-bold-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'tex_gyre_pagella';
+    src: url('texgyrepagella-bolditalic-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+}
+
