@@ -14,6 +14,9 @@ body a.sidenote-number
   font-size         : smaller;
   text-decoration   : none;
   color             : #ff541c;
+  margin            : 0 0 0 0;
+  padding           : 0 0 0 0;
+  line-height       : 0.5em;
 }
 
 body a.sidenote-number::before
@@ -29,22 +32,10 @@ body span.sidenote::before
   color          : #ff541c;
 }
 
-body span.sidenote
-{
-  float          : right;
-  clear          : right;
-  font-size      : 0.8em;
-  vertical-align : baseline;
-  width          : 50%;
-  margin-right   : -53%;
-  text-indent    : 0em;
-  line-height    : 1.1em;
-}
-
 body div#disqus_thread
 {
   max-width : 40em;
-  margin    : 1em auto auto auto;
+  margin    : 2em auto auto auto;
 }
 
 body div#content
@@ -72,6 +63,22 @@ body div#content div#textBody
   margin      : 1em auto auto auto;
 }
 
+@media all and (min-width: 55em) and (max-width: 75em)
+{
+body div#content div#textBody
+{
+  padding-right : 18.3em;
+}
+
+}
+@media all and (min-width: 75em) and (max-width: 90em)
+{
+body div#content div#textBody
+{
+  padding-right : 14em;
+}
+
+}
 body div#content p#date
 {
   text-align : center;
@@ -87,5 +94,38 @@ body div#content blockquote
   text-align : justify;
 }
 
+@media all and (min-width: 760px)
+{
+
+body span.sidenote
+{
+  float          : right;
+  clear          : right;
+  font-size      : 0.8em;
+  vertical-align : baseline;
+  width          : 50%;
+  margin-right   : -53%;
+  text-indent    : 0em;
+  line-height    : 1.1em;
+}
+
+}
+@media all and (max-width: 760px)
+{
+
+body span.sidenote
+{
+  float          : right;
+  clear          : right;
+  font-size      : 0.8em;
+  vertical-align : baseline;
+  width          : 50%;
+  margin-right   : -53%;
+  text-indent    : 0em;
+  line-height    : 1.1em;
+  text-align     : start;
+}
+
+}
 
 /* Generated with Clay, http://fvisser.nl/clay */
