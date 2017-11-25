@@ -41,6 +41,12 @@ body span.sidenote
   line-height    : 1.1em;
 }
 
+body div#disqus_thread
+{
+  max-width : 40em;
+  margin    : 1em auto auto auto;
+}
+
 body div#content
 {
   text-rendering : optimizeLegibility;
