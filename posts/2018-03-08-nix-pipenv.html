@@ -1,0 +1,73 @@
+<head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css?familyGentium+Basic" type="text/css" rel="stylesheet"><link href="https://fonts.googleapis.com/css?familyScope+One" type="text/css" rel="stylesheet"><link href="https://fonts.googleapis.com/css?familySource+Serif+Pro" type="text/css" rel="stylesheet"><link href="https://fonts.googleapis.com/css?familyEB+Garamond" type="text/css" rel="stylesheet"><link href="https://fonts.googleapis.com/css?familyCardo" type="text/css" rel="stylesheet"><meta content="width=device-width, initial-scale=1" name="viewport"><title>Painlessly developing Python on NixOS with pipenv</title><link href="../article.css" type="text/css" rel="stylesheet"><link href="../fonts/stylesheet.css" type="text/css" rel="stylesheet"></head><body><div id="content"><h1>Painlessly developing Python on NixOS with pipenv</h1><p id="date"><i>8 March 2018</i></p><p id="read-time"><i>2 minute read</i></p><div id="textBody"><p>For a long time, I’ve wanted to develop Python code on NixOS, but using Nix to manage dependencies was a major pain. If the dependencies you want are already in Nixpkgs, then you’re good, but otherwise you need to use things like <a href="https://github.com/garbas/pypi2nix">pypi2nix</a> to turn Pypi packages into nix derivations. This never quite worked out for me, so I ended up writing the nix derivations myself… which sucked.</p>
+<p>I’ve been aware of <a href="https://github.com/pypa/pipenv">pipenv</a> for a while now, and it seemed like the ideal solution. It gives Nix/Stack/Yarn-like reproducibility, while still being actively maintained, unlike some of these Nix-specific Python package tools. I had never managed to get this to work for me, but I’ve finally got a configuration working on Nix.</p>
+<h2 id="first-attempt">First attempt</h2>
+<p>My original instinct was to throw together a <code>default.nix</code> file:</p>
+<div class="sourceCode"><pre class="sourceCode nix"><code class="sourceCode bash"><span class="ex">with</span> import <span class="op">&lt;</span>nixpkgs<span class="op">&gt;</span> <span class="dt">{}</span><span class="kw">;</span>
+<span class="ex">mkDerivation</span> {
+  <span class="ex">name</span> = <span class="st">&quot;my-python-project&quot;</span><span class="kw">;</span>
+  <span class="ex">buildInputs</span> = [ python36 pipenv ]<span class="kw">;</span>
+}</code></pre></div>
+<p>and just open <code>nix-shell</code> and run all my <code>pipenv</code> commands from there.</p>
+<h2 id="the-problem">The problem</h2>
+<p>Unfortunately, whenever I tried to install a package that required compiling lots of C source (like numpy or pandas), the <code>pipenv install</code> command would take forever, and often either seg-fault in the process or just never complete.</p>
+<p>From using <code>pipenv</code> on other, non-NixOS machines, I knew that installing numpy and pandas was much faster on those machines, but I didn’t know why. Finally, I found out that on OS X, Windows, and some distributions of Linux, Python installs “wheels”, which contain the prebuilt binary code, rather than building from source. It only does this on Linux if it detects that your distribution supports wheels from the <a href="https://github.com/pypa/manylinux">manylinux project</a>. A quick test reveals that my Python distribution is not manylinux-compatible:</p>
+<pre><code>[sidharth@nixos:~]$ python3
+Python 3.6.4 (default, Dec 19 2017, 05:36:13) 
+[GCC 6.4.0] on linux
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; import _manylinux
+&gt;&gt;&gt; _manylinux.manylinux1_compatible
+False</code></pre>
+<h2 id="the-solution">The solution</h2>
+<p>In order to use manylinux <code>whl</code>s to get fast package installs, I needed to</p>
+<ol style="list-style-type: decimal">
+<li>set up my system so that manylinux whls work (i.e. make it many-linux compatible),</li>
+<li>convince Python that my system is manylinux-compatible.</li>
+</ol>
+<h3 id="step-1">Step 1</h3>
+<p>The first step is to make an environment that follows <a href="https://www.python.org/dev/peps/pep-0513/#the-manylinux1-policy">the <code>manylinux1</code> policy</a>:</p>
+<pre><code>with import &lt;nixpkgs&gt; {};
+
+buildFHSUserEnv {
+  name = &quot;my-python-env&quot;;
+  targetPkgs = pkgs: with pkgs; [
+    python3
+    pipenv
+    which
+    gcc
+    binutils
+
+    # All the C libraries that a manylinux_1 wheel might depend on:
+    ncurses
+    xorg.libX11
+    xorg.libXext
+    xorg.libXrender
+    xorg.libICE
+    xorg.libSM
+    glib
+  ];
+
+  runScript = &quot;$SHELL&quot;;
+}</code></pre>
+<p>This creates an environment that contains all the C libraries that a <code>manylinux_1</code> wheel might depend on, all in <code>/usr/lib/</code>, where the binaries expect it. Save this in <code>default.nix</code>, run <code>nix-build</code>, and you can enter this environment with <code>./result/bin/my-python-env</code>.</p>
+<h3 id="step-2">Step 2</h3>
+<p>To convince Python that this environment is <code>manylinux_1</code>-compatible, you need <code>_manylinux.manylinux1_compatible</code> to be true. We can do this by making a file called <code>_manylinux.py</code> that contains:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="bu">print</span>(<span class="st">&quot;in _manylinux.py&quot;</span>)
+manylinux1_compatible <span class="op">=</span> <span class="va">True</span></code></pre></div>
+<p>I saved this file in a directory called <code>./extra_python_stuff</code>, and I made sure that <code>pipenv</code> finds this code by setting the environment variable <code>PYTHONPATH=./extra_python_stuff</code> before using <code>pipenv</code>.</p>
+<p>If you don’t want to set the environment variable every time you use <code>pipenv</code>, you can add the following to your derivation in <code>default.nix</code>:</p>
+<div class="sourceCode"><pre class="sourceCode nix"><code class="sourceCode bash">  <span class="ex">profile</span> = <span class="st">''</span>
+    <span class="bu">export</span> <span class="va">PYTHONPATH=</span>./extra_python_stuff
+  <span class="st">''</span>;</code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>With the above steps, I am able to <code>pipenv install</code> any package, and it uses the <code>whl</code>, as long as I am within my nix environment (by running <code>./result/bin/my-python-env</code>). Hooray!</p></div><div id="disqus_thread"></div><script>var disqus_config = function () {
+this.page.url = "https://sid-kap.github.io/posts/2018-03-08-nix-pipenv.html";
+this.page.identifier = "2018-03-08-nix-pipenv";
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://sid-kap.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div></body>

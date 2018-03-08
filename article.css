@@ -57,10 +57,9 @@ body div#content h1
 
 body div#content div#textBody
 {
-  text-indent : 2em;
-  text-align  : justify;
-  max-width   : 35em;
-  margin      : 1em auto auto auto;
+  text-align : justify;
+  max-width  : 35em;
+  margin     : 1em auto auto auto;
 }
 
 @media all and (min-width: 55em) and (max-width: 75em)
