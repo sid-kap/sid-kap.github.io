@@ -16,6 +16,14 @@ body p
   font-size : 1.3em;
 }
 
+body div#bio
+{
+  max-width    : 40em;
+  margin-left  : auto;
+  margin-right : auto;
+  text-align   : justify;
+}
+
 body table#postsList
 {
   font-size      : 1.3em;
