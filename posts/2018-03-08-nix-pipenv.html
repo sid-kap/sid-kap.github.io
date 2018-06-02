@@ -117,11 +117,18 @@ False</code></pre>
 <p>To convince Python that this environment is <code>manylinux_1</code>-compatible, you need <code>_manylinux.manylinux1_compatible</code> to be true. We can do this by making a file called <code>_manylinux.py</code> that contains:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="bu">print</span>(<span class="st">&quot;in _manylinux.py&quot;</span>)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">manylinux1_compatible <span class="op">=</span> <span class="va">True</span></a></code></pre></div>
-<p>I saved this file in a directory called <code>./extra_python_stuff</code>, and I made sure that <code>pipenv</code> finds this code by setting the environment variable <code>PYTHONPATH=./extra_python_stuff</code> before using <code>pipenv</code>.</p>
-<p>If you don’t want to set the environment variable every time you use <code>pipenv</code>, you can add the following to your derivation in <code>default.nix</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode nix"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1">  <span class="ex">profile</span> = <span class="st">''</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">    <span class="bu">export</span> <span class="va">PYTHONPATH=</span>./extra_python_stuff</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="st">''</span>;</a></code></pre></div>
+<p>To make sure that <code>pipenv</code> finds this code, you need to save this file somewhere in your <code>PYTHONPATH</code>. I did this by adding</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode nix"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="bu">let</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="ex">manyLinuxFile</span> =</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">    <span class="ex">writeTextDir</span> <span class="st">&quot;_manylinux.py&quot;</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">      <span class="st">''</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">        <span class="ex">print</span>(<span class="st">&quot;in _manylinux.py&quot;</span>)</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">        <span class="ex">manylinux1_compatible</span> = True</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">      <span class="st">''</span>;</a></code></pre></div>
+<p>to the top of my <code>default.nix</code>, and by adding the following to my derivation in <code>default.nix</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode nix"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1">  <span class="ex">profile</span> = <span class="st">''</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">    <span class="bu">export</span> <span class="va">PYTHONPATH=${manyLinuxFile</span><span class="er">.out</span><span class="va">}</span>:/usr/lib/python3.6/site-packages</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">  <span class="st">''</span>;</a></code></pre></div>
 <h2 id="conclusion">Conclusion</h2>
 <p>With the above steps, I am able to <code>pipenv install</code> any package, and it uses the <code>whl</code>, as long as I am within my nix environment (by running <code>./result/bin/my-python-env</code>). Hooray!</p></div><div id="disqus_thread"></div><script>var disqus_config = function () {
 this.page.url = "https://sid-kap.github.io/posts/2018-03-08-nix-pipenv.html";
