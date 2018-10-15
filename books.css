@@ -40,5 +40,12 @@ body table#booksList a
   text-decoration : none;
 }
 
+body table#booksList span.shelf
+{
+  border-radius : 0.5em 0.5em 0.5em 0.5em;
+  display       : inline-block;
+  padding       : 0.2em 0.2em 0.2em 0.2em;
+}
+
 
 /* Generated with Clay, http://fvisser.nl/clay */
