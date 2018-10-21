@@ -44,7 +44,10 @@ body table#booksList span.shelf
 {
   border-radius : 0.5em 0.5em 0.5em 0.5em;
   display       : inline-block;
-  padding       : 0.2em 0.2em 0.2em 0.2em;
+  padding       : 0.4em 0.4em 0.4em 0.4em;
+  font-size     : 80%;
+  color         : #1e1e1e;
+  font-family   : sans-serif;
 }
 
 
