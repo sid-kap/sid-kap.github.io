@@ -93,6 +93,18 @@ body div#content blockquote
   text-align : justify;
 }
 
+body div#content img
+{
+  width : 100%;
+}
+
+body div#content figure
+{
+  width        : 100%;
+  margin-left  : 0;
+  margin-right : 0;
+}
+
 @media all and (min-width: 760px)
 {
 
