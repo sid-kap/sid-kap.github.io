@@ -26,10 +26,11 @@ body a.sidenote-number::before
 
 body span.sidenote::before
 {
-  content        : counter(sidenote-counter) " ";
+  content        : counter(sidenote-counter);
   vertical-align : super;
   font-size      : smaller;
   color          : #ff541c;
+  position       : relative;
 }
 
 body div#disqus_thread
@@ -114,10 +115,10 @@ body span.sidenote
   clear          : right;
   font-size      : 0.8em;
   vertical-align : baseline;
+  text-indent    : -0.5em;
+  line-height    : 1.1em;
   width          : 50%;
   margin-right   : -53%;
-  text-indent    : 0em;
-  line-height    : 1.1em;
 }
 
 }
@@ -130,10 +131,10 @@ body span.sidenote
   clear          : right;
   font-size      : 0.8em;
   vertical-align : baseline;
+  text-indent    : -0.5em;
+  line-height    : 1.1em;
   width          : 50%;
   margin-right   : -53%;
-  text-indent    : 0em;
-  line-height    : 1.1em;
   text-align     : start;
 }
 
