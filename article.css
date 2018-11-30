@@ -81,26 +81,31 @@ body div#content blockquote
 
 body div#content img
 {
-  margin  : 1em auto auto auto;
-  display : block;
+  margin-top    : 1em;
+  margin-bottom : auto;
+  display       : block;
+  width         : 98vw;
+  position      : relative;
+  margin-left   : calc(-49vw + 50%);
+  margin-right  : calc(-49vw + 50%);
 }
 
-@media all and (min-width: 760px)
+@media all and (max-width: 1000px)
 {
 body div#content img
 {
-  width    : 80vw;
-  position : relative;
+  width        : 98vw;
+  position     : relative;
+  margin-left  : calc(-49vw + 50%);
+  margin-right : calc(-49vw + 50%);
 }
 
 @media all and (min-width: 55em) and (max-width: 75em)
 {
 body div#content img
 {
-  left         : calc(40% - 18.3em);
-  right        : calc(40% + 18.3em);
-  margin-left  : calc(18.3em - 40vw);
-  margin-right : calc(-18.3em - 40vw);
+  margin-left  : calc(-49vw + 50% + 9.2em);
+  margin-right : calc(-49vw + 50% - 9.2em);
 }
 
 }
@@ -108,35 +113,63 @@ body div#content img
 {
 body div#content img
 {
-  left         : calc(40% - 14em);
-  right        : calc(40% + 14em);
-  margin-left  : calc(14em - 40vw);
-  margin-right : calc(-14em - 40vw);
-}
-
-}
-@media all and (min-width: 90em)
-{
-body div#content img
-{
-  left         : calc(40% + 2em);
-  right        : 40%;
-  margin-left  : calc(2em - 40vw);
-  margin-right : -40vw;
+  margin-left  : calc(-49vw + 50% + 7em);
+  margin-right : calc(-49vw + 50% - 7em);
 }
 
 }
 }
-@media all and (max-width: 760px)
+@media all and (min-width: 1000px)
 {
 body div#content img
 {
-  width        : 100vw;
+  width        : 80vw;
   position     : relative;
-  left         : 50%;
-  right        : 50%;
-  margin-left  : -50vw;
-  margin-right : -50vw;
+  margin-left  : calc(-40vw + 50%);
+  margin-right : calc(-40vw + 50%);
+}
+
+@media all and (min-width: 55em) and (max-width: 75em)
+{
+body div#content img
+{
+  margin-left  : calc(-40vw + 50% + 9.2em);
+  margin-right : calc(-40vw + 50% - 9.2em);
+}
+
+}
+@media all and (min-width: 75em) and (max-width: 90em)
+{
+body div#content img
+{
+  margin-left  : calc(-40vw + 50% + 7em);
+  margin-right : calc(-40vw + 50% - 7em);
+}
+
+}
+}
+body div#content figcaption
+{
+  margin-left  : calc(-49vw + 50%);
+  margin-right : calc(-49vw + 50%);
+  text-align   : center;
+}
+
+@media all and (min-width: 55em) and (max-width: 75em)
+{
+body div#content figcaption
+{
+  margin-left  : calc(-40vw + 50% + 9.2em);
+  margin-right : calc(-40vw + 50% - 9.2em);
+}
+
+}
+@media all and (min-width: 75em) and (max-width: 90em)
+{
+body div#content figcaption
+{
+  margin-left  : calc(-40vw + 50% + 7em);
+  margin-right : calc(-40vw + 50% - 7em);
 }
 
 }
