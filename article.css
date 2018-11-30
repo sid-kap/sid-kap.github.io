@@ -44,9 +44,17 @@ body div#content
   text-rendering : optimizeLegibility;
   margin-top     : 5em;
   margin-bottom  : 5em;
+  text-align     : justify;
+  max-width      : 35em;
+  margin         : 1em auto auto auto;
   font-size      : 1.19999em;
   margin         : 1em auto auto auto;
   line-height    : 1.39999em;
+}
+
+body div#content div#textBody
+{
+  margin : 1em auto auto auto;
 }
 
 body div#content h1
@@ -56,29 +64,6 @@ body div#content h1
   line-height : 1.1em;
 }
 
-body div#content div#textBody
-{
-  text-align : justify;
-  max-width  : 35em;
-  margin     : 1em auto auto auto;
-}
-
-@media all and (min-width: 55em) and (max-width: 75em)
-{
-body div#content div#textBody
-{
-  padding-right : 18.3em;
-}
-
-}
-@media all and (min-width: 75em) and (max-width: 90em)
-{
-body div#content div#textBody
-{
-  padding-right : 14em;
-}
-
-}
 body div#content p#date
 {
   text-align : center;
@@ -96,16 +81,81 @@ body div#content blockquote
 
 body div#content img
 {
-  width : 100%;
+  margin  : 1em auto auto auto;
+  display : block;
 }
 
-body div#content figure
+@media all and (min-width: 760px)
 {
-  width        : 100%;
-  margin-left  : 0;
-  margin-right : 0;
+body div#content img
+{
+  width    : 80vw;
+  position : relative;
 }
 
+@media all and (min-width: 55em) and (max-width: 75em)
+{
+body div#content img
+{
+  left         : calc(40% - 18.3em);
+  right        : calc(40% + 18.3em);
+  margin-left  : calc(18.3em - 40vw);
+  margin-right : calc(-18.3em - 40vw);
+}
+
+}
+@media all and (min-width: 75em) and (max-width: 90em)
+{
+body div#content img
+{
+  left         : calc(40% - 14em);
+  right        : calc(40% + 14em);
+  margin-left  : calc(14em - 40vw);
+  margin-right : calc(-14em - 40vw);
+}
+
+}
+@media all and (min-width: 90em)
+{
+body div#content img
+{
+  left         : calc(40% + 2em);
+  right        : 40%;
+  margin-left  : calc(2em - 40vw);
+  margin-right : -40vw;
+}
+
+}
+}
+@media all and (max-width: 760px)
+{
+body div#content img
+{
+  width        : 100vw;
+  position     : relative;
+  left         : 50%;
+  right        : 50%;
+  margin-left  : -50vw;
+  margin-right : -50vw;
+}
+
+}
+@media all and (min-width: 55em) and (max-width: 75em)
+{
+body div#content
+{
+  padding-right : 18.3em;
+}
+
+}
+@media all and (min-width: 75em) and (max-width: 90em)
+{
+body div#content
+{
+  padding-right : 14em;
+}
+
+}
 @media all and (min-width: 760px)
 {
 

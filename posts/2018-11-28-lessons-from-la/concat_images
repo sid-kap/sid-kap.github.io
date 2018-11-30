@@ -1,0 +1,1 @@
+convert "coit and campbell.png" "garvey ave 2.png" -gravity center -background none +append "comparing street view 2.png"
