@@ -4,6 +4,7 @@ body
   background-color : #fbf7ea;
   font-family      : "tex_gyre_pagella", serif;
   color            : #444444;
+  margin           : 0 0 0 0;
   counter-reset    : sidenote-counter;
 }
 
@@ -46,7 +47,8 @@ body div#content
   margin-bottom  : 5em;
   text-align     : justify;
   max-width      : 35em;
-  margin         : 1em auto auto auto;
+  margin-top     : 1em;
+  margin-bottom  : auto;
   font-size      : 1.19999em;
   margin         : 1em auto auto auto;
   line-height    : 1.39999em;
@@ -81,18 +83,19 @@ body div#content blockquote
 
 body div#content img
 {
+  width : 100%;
+}
+
+body div#content figure
+{
   margin-top    : 1em;
   margin-bottom : auto;
   display       : block;
-  width         : 98vw;
-  position      : relative;
-  margin-left   : calc(-49vw + 50%);
-  margin-right  : calc(-49vw + 50%);
 }
 
 @media all and (max-width: 1000px)
 {
-body div#content img
+body div#content figure
 {
   width        : 98vw;
   position     : relative;
@@ -100,28 +103,19 @@ body div#content img
   margin-right : calc(-49vw + 50%);
 }
 
-@media all and (min-width: 55em) and (max-width: 75em)
+@media all and (min-width: 63.62999em) and (max-width: 84.84em)
 {
-body div#content img
+body div#content figure
 {
-  margin-left  : calc(-49vw + 50% + 9.2em);
-  margin-right : calc(-49vw + 50% - 9.2em);
-}
-
-}
-@media all and (min-width: 75em) and (max-width: 90em)
-{
-body div#content img
-{
-  margin-left  : calc(-49vw + 50% + 7em);
-  margin-right : calc(-49vw + 50% - 7em);
+  margin-left  : calc(-1 * (100vw - 1.5 * 35em) / 2);
+  margin-right : calc(-1 * (100vw - 1.5 * 35em) / 2);
 }
 
 }
 }
 @media all and (min-width: 1000px)
 {
-body div#content img
+body div#content figure
 {
   width        : 80vw;
   position     : relative;
@@ -129,63 +123,45 @@ body div#content img
   margin-right : calc(-40vw + 50%);
 }
 
-@media all and (min-width: 55em) and (max-width: 75em)
+@media all and (min-width: 63.62999em) and (max-width: 84.84em)
 {
-body div#content img
+body div#content figure
 {
-  margin-left  : calc(-40vw + 50% + 9.2em);
-  margin-right : calc(-40vw + 50% - 9.2em);
-}
-
-}
-@media all and (min-width: 75em) and (max-width: 90em)
-{
-body div#content img
-{
-  margin-left  : calc(-40vw + 50% + 7em);
-  margin-right : calc(-40vw + 50% - 7em);
+  margin-left  : calc(-1 * (80vw - 1.5 * 35em) / 2);
+  margin-right : calc(-1 * (80vw - 1.5 * 35em) / 2);
 }
 
 }
 }
 body div#content figcaption
 {
-  margin-left  : calc(-49vw + 50%);
-  margin-right : calc(-49vw + 50%);
-  text-align   : center;
+  text-align : center;
 }
 
-@media all and (min-width: 55em) and (max-width: 75em)
-{
-body div#content figcaption
-{
-  margin-left  : calc(-40vw + 50% + 9.2em);
-  margin-right : calc(-40vw + 50% - 9.2em);
-}
-
-}
-@media all and (min-width: 75em) and (max-width: 90em)
-{
-body div#content figcaption
-{
-  margin-left  : calc(-40vw + 50% + 7em);
-  margin-right : calc(-40vw + 50% - 7em);
-}
-
-}
-@media all and (min-width: 55em) and (max-width: 75em)
+@media all and (max-width: 63em)
 {
 body div#content
 {
-  padding-right : 18.3em;
+  margin-left  : auto;
+  margin-right : auto;
 }
 
 }
-@media all and (min-width: 75em) and (max-width: 90em)
+@media all and (min-width: 84em)
 {
 body div#content
 {
-  padding-right : 14em;
+  margin-left  : auto;
+  margin-right : auto;
+}
+
+}
+@media all and (min-width: 63.62999em) and (max-width: 84.84em)
+{
+body div#content
+{
+  position    : relative;
+  margin-left : calc((100% - 1.5 * 35em) / 2);
 }
 
 }
