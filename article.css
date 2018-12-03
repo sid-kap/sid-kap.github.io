@@ -66,16 +66,77 @@ body div#content h1
   line-height : 1.1em;
 }
 
+body div#content p#go-home
+{
+  text-align   : center;
+  width        : 80vw;
+  position     : relative;
+  margin-left  : calc(-40vw + 50%);
+  margin-right : calc(-40vw + 50%);
+}
+
+@media all and (min-width: 63.62999em) and (max-width: 84.84em)
+{
+body div#content p#go-home
+{
+  margin-left  : calc(-1 * (80vw - 1.5 * 35 * (19.2px)) / 2);
+  margin-right : calc(-1 * (80vw - 1.5 * 35 * (19.2px)) / 2);
+}
+
+}
+body div#content h1#title
+{
+  width        : 80vw;
+  position     : relative;
+  margin-left  : calc(-40vw + 50%);
+  margin-right : calc(-40vw + 50%);
+}
+
+@media all and (min-width: 63.62999em) and (max-width: 84.84em)
+{
+body div#content h1#title
+{
+  margin-left  : calc(-1 * (80vw - 1.5 * 35 * (19.2px)) / 2);
+  margin-right : calc(-1 * (80vw - 1.5 * 35 * (19.2px)) / 2);
+}
+
+}
 body div#content p#date
 {
-  text-align : center;
+  text-align   : center;
+  width        : 80vw;
+  position     : relative;
+  margin-left  : calc(-40vw + 50%);
+  margin-right : calc(-40vw + 50%);
 }
 
+@media all and (min-width: 63.62999em) and (max-width: 84.84em)
+{
+body div#content p#date
+{
+  margin-left  : calc(-1 * (80vw - 1.5 * 35 * (19.2px)) / 2);
+  margin-right : calc(-1 * (80vw - 1.5 * 35 * (19.2px)) / 2);
+}
+
+}
 body div#content p#read-time
 {
-  text-align : center;
+  text-align   : center;
+  width        : 80vw;
+  position     : relative;
+  margin-left  : calc(-40vw + 50%);
+  margin-right : calc(-40vw + 50%);
 }
 
+@media all and (min-width: 63.62999em) and (max-width: 84.84em)
+{
+body div#content p#read-time
+{
+  margin-left  : calc(-1 * (80vw - 1.5 * 35 * (19.2px)) / 2);
+  margin-right : calc(-1 * (80vw - 1.5 * 35 * (19.2px)) / 2);
+}
+
+}
 body div#content blockquote
 {
   text-align : justify;
@@ -107,8 +168,8 @@ body div#content figure
 {
 body div#content figure
 {
-  margin-left  : calc(-1 * (100vw - 1.5 * 35em) / 2);
-  margin-right : calc(-1 * (100vw - 1.5 * 35em) / 2);
+  margin-left  : calc(-1 * (99vw - 1.5 * 35em) / 2);
+  margin-right : calc(-1 * (99vw - 1.5 * 35em) / 2);
 }
 
 }
