@@ -1,23 +1,24 @@
-<head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css?familyGentium+Basic" type="text/css" rel="stylesheet"><link href="https://fonts.googleapis.com/css?familyScope+One" type="text/css" rel="stylesheet"><link href="https://fonts.googleapis.com/css?familySource+Serif+Pro" type="text/css" rel="stylesheet"><link href="https://fonts.googleapis.com/css?familyEB+Garamond" type="text/css" rel="stylesheet"><link href="https://fonts.googleapis.com/css?familyCardo" type="text/css" rel="stylesheet"><meta content="width=device-width, initial-scale=1" name="viewport"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:creator" content="@sidkap_"><meta property="og:title" content="Painlessly developing Python on NixOS with pipenv"><meta property="twitter:description" content="For a long time, I've wanted to develop Python code on NixOS, but using Nix to manage dependencies was a major pain. If the dependencies you want are already in Nixpkgs, then you're good, but otherwise you need to use things like [pypi2nix](https://github.com/garbas/pypi2nix) to turn Pypi packages i"><title>Painlessly developing Python on NixOS with pipenv</title><link href="../article.css" type="text/css" rel="stylesheet"><link href="../fonts/stylesheet.css" type="text/css" rel="stylesheet"><style>a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+<head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css?familyGentium+Basic" type="text/css" rel="stylesheet"><link href="https://fonts.googleapis.com/css?familyScope+One" type="text/css" rel="stylesheet"><link href="https://fonts.googleapis.com/css?familySource+Serif+Pro" type="text/css" rel="stylesheet"><link href="https://fonts.googleapis.com/css?familyEB+Garamond" type="text/css" rel="stylesheet"><link href="https://fonts.googleapis.com/css?familyCardo" type="text/css" rel="stylesheet"><meta content="width=device-width, initial-scale=1" name="viewport"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:creator" content="@sidkap_"><meta property="og:title" content="Painlessly developing Python on NixOS with pipenv"><meta property="twitter:description" content="For a long time, I've wanted to develop Python code on NixOS, but using Nix to manage dependencies was a major pain. If the dependencies you want are already in Nixpkgs, then you're good, but otherwise you need to use things like [pypi2nix](https://github.com/garbas/pypi2nix) to turn Pypi packages i"><title>Painlessly developing Python on NixOS with pipenv</title><link href="../article.css" type="text/css" rel="stylesheet"><link href="../fonts/stylesheet.css" type="text/css" rel="stylesheet"><style>pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -26,9 +27,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -63,11 +64,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>I’ve been aware of <a href="https://github.com/pypa/pipenv">pipenv</a> for a while now, and it seemed like the ideal solution. It gives Nix/Stack/Yarn-like reproducibility, while still being actively maintained, unlike some of these Nix-specific Python package tools. I had never managed to get this to work for me, but I’ve finally got a configuration working on Nix.</p>
 <h2 id="first-attempt">First attempt</h2>
 <p>My original instinct was to throw together a <code>default.nix</code> file:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode nix"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">with</span> import <span class="op">&lt;</span>nixpkgs<span class="op">&gt;</span> {};</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="ex">mkDerivation</span> {</a>
-<a class="sourceLine" id="cb1-3" title="3">  <span class="ex">name</span> = <span class="st">&quot;my-python-project&quot;</span><span class="kw">;</span></a>
-<a class="sourceLine" id="cb1-4" title="4">  <span class="ex">buildInputs</span> = [ python36 pipenv ]<span class="kw">;</span></a>
-<a class="sourceLine" id="cb1-5" title="5">}</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode nix"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="ex">with</span> import <span class="op">&lt;</span>nixpkgs<span class="op">&gt;</span> {};</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="ex">mkDerivation</span> {</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>  <span class="ex">name</span> = <span class="st">&quot;my-python-project&quot;</span><span class="kw">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>  <span class="ex">buildInputs</span> = [ python36 pipenv ]<span class="kw">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>}</span></code></pre></div>
 <p>and just open <code>nix-shell</code> and run all my <code>pipenv</code> commands from there.</p>
 <h2 id="the-problem">The problem</h2>
 <p>Unfortunately, whenever I tried to install a package that required compiling lots of C source (like numpy or pandas), the <code>pipenv install</code> command would take forever, and often either seg-fault in the process or just never complete.</p>
@@ -87,46 +88,46 @@ False</code></pre>
 </ol>
 <h3 id="step-1">Step 1</h3>
 <p>The first step is to make an environment that follows <a href="https://www.python.org/dev/peps/pep-0513/#the-manylinux1-policy">the <code>manylinux1</code> policy</a>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode nix"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">with</span> import <span class="op">&lt;</span>nixpkgs<span class="op">&gt;</span> {};</a>
-<a class="sourceLine" id="cb3-2" title="2"></a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="ex">buildFHSUserEnv</span> {</a>
-<a class="sourceLine" id="cb3-4" title="4">  <span class="ex">name</span> = <span class="st">&quot;my-python-env&quot;</span><span class="kw">;</span></a>
-<a class="sourceLine" id="cb3-5" title="5">  <span class="ex">targetPkgs</span> = pkgs: with pkgs<span class="kw">;</span><span class="bu"> [</span></a>
-<a class="sourceLine" id="cb3-6" title="6">    python3</a>
-<a class="sourceLine" id="cb3-7" title="7">    pipenv</a>
-<a class="sourceLine" id="cb3-8" title="8">    which</a>
-<a class="sourceLine" id="cb3-9" title="9">    gcc</a>
-<a class="sourceLine" id="cb3-10" title="10">    binutils</a>
-<a class="sourceLine" id="cb3-11" title="11"></a>
-<a class="sourceLine" id="cb3-12" title="12">    <span class="co"># All the C libraries that a manylinux_1 wheel might depend on:</span></a>
-<a class="sourceLine" id="cb3-13" title="13">    ncurses</a>
-<a class="sourceLine" id="cb3-14" title="14">    xorg.libX11</a>
-<a class="sourceLine" id="cb3-15" title="15">    xorg.libXext</a>
-<a class="sourceLine" id="cb3-16" title="16">    xorg.libXrender</a>
-<a class="sourceLine" id="cb3-17" title="17">    xorg.libICE</a>
-<a class="sourceLine" id="cb3-18" title="18">    xorg.libSM</a>
-<a class="sourceLine" id="cb3-19" title="19">    glib</a>
-<a class="sourceLine" id="cb3-20" title="20">  ];</a>
-<a class="sourceLine" id="cb3-21" title="21"></a>
-<a class="sourceLine" id="cb3-22" title="22">  runScript <span class="ot">=</span> <span class="st">&quot;</span><span class="va">$SHELL</span><span class="st">&quot;</span>;</a>
-<a class="sourceLine" id="cb3-23" title="23">}</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode nix"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="ex">with</span> import <span class="op">&lt;</span>nixpkgs<span class="op">&gt;</span> {};</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="ex">buildFHSUserEnv</span> {</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>  <span class="ex">name</span> = <span class="st">&quot;my-python-env&quot;</span><span class="kw">;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>  <span class="ex">targetPkgs</span> = pkgs: with pkgs<span class="kw">;</span><span class="bu"> [</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>    python3</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>    pipenv</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>    which</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>    gcc</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>    binutils</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>    <span class="co"># All the C libraries that a manylinux_1 wheel might depend on:</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>    ncurses</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>    xorg.libX11</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>    xorg.libXext</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>    xorg.libXrender</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>    xorg.libICE</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a>    xorg.libSM</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a>    glib</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a>  ];</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true"></a>  runScript <span class="ot">=</span> <span class="st">&quot;</span><span class="va">$SHELL</span><span class="st">&quot;</span>;</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true"></a>}</span></code></pre></div>
 <p>This creates an environment that contains all the C libraries that a <code>manylinux_1</code> wheel might depend on, all in <code>/usr/lib/</code>, where the binaries expect it. Save this in <code>default.nix</code>, run <code>nix-build</code>, and you can enter this environment with <code>./result/bin/my-python-env</code>.</p>
 <h3 id="step-2">Step 2</h3>
 <p>To convince Python that this environment is <code>manylinux_1</code>-compatible, you need <code>_manylinux.manylinux1_compatible</code> to be true. We can do this by making a file called <code>_manylinux.py</code> that contains:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1"><span class="bu">print</span>(<span class="st">&quot;in _manylinux.py&quot;</span>)</a>
-<a class="sourceLine" id="cb4-2" title="2">manylinux1_compatible <span class="op">=</span> <span class="va">True</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&quot;in _manylinux.py&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>manylinux1_compatible <span class="op">=</span> <span class="va">True</span></span></code></pre></div>
 <p>To make sure that <code>pipenv</code> finds this code, you need to save this file somewhere in your <code>PYTHONPATH</code>. I did this by adding</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode nix"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="bu">let</span></a>
-<a class="sourceLine" id="cb5-2" title="2">  <span class="ex">manyLinuxFile</span> =</a>
-<a class="sourceLine" id="cb5-3" title="3">    <span class="ex">writeTextDir</span> <span class="st">&quot;_manylinux.py&quot;</span></a>
-<a class="sourceLine" id="cb5-4" title="4">      <span class="st">''</span></a>
-<a class="sourceLine" id="cb5-5" title="5">        <span class="ex">print</span>(<span class="st">&quot;in _manylinux.py&quot;</span>)</a>
-<a class="sourceLine" id="cb5-6" title="6">        <span class="ex">manylinux1_compatible</span> = True</a>
-<a class="sourceLine" id="cb5-7" title="7">      <span class="st">''</span>;</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode nix"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="bu">let</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>  <span class="ex">manyLinuxFile</span> =</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    <span class="ex">writeTextDir</span> <span class="st">&quot;_manylinux.py&quot;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>      <span class="st">''</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>        <span class="ex">print</span>(<span class="st">&quot;in _manylinux.py&quot;</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>        <span class="ex">manylinux1_compatible</span> = True</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>      <span class="st">''</span>;</span></code></pre></div>
 <p>to the top of my <code>default.nix</code>, and by adding the following to my derivation in <code>default.nix</code>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode nix"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1">  <span class="ex">profile</span> = <span class="st">''</span></a>
-<a class="sourceLine" id="cb6-2" title="2">    <span class="bu">export</span> <span class="va">PYTHONPATH=${manyLinuxFile</span><span class="er">.out</span><span class="va">}</span>:/usr/lib/python3.6/site-packages</a>
-<a class="sourceLine" id="cb6-3" title="3">  <span class="st">''</span>;</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode nix"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>  <span class="ex">profile</span> = <span class="st">''</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    <span class="bu">export</span> <span class="va">PYTHONPATH=${manyLinuxFile</span><span class="er">.out</span><span class="va">}</span>:/usr/lib/python3.6/site-packages</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>  <span class="st">''</span>;</span></code></pre></div>
 <h2 id="conclusion">Conclusion</h2>
 <p>With the above steps, I am able to <code>pipenv install</code> any package, and it uses the <code>whl</code>, as long as I am within my nix environment (by running <code>./result/bin/my-python-env</code>). Hooray!</p></div><div id="disqus_thread"></div><script>var disqus_config = function () {
 this.page.url = "https://sid-kap.github.io/posts/2018-03-08-nix-pipenv.html";
